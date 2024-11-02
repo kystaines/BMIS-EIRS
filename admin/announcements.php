@@ -37,7 +37,7 @@ $page = 'Announcements';
                                     <div class="card-body pt-0">
                                         <div class="row">
                                             <div class="col-5 text-center">
-                                                <img src="../images/brgylogo.png" alt="user-avatar" class="img-square img-fluid">
+                                                <img src="../images/logo.png" alt="user-avatar" class="img-square img-fluid">
                                             </div>
                                             <div class="col-7">
                                                 <h2 class="lead"><b>News Title</b></h2>
@@ -61,7 +61,7 @@ $page = 'Announcements';
                                     <div class="card-body pt-0">
                                         <div class="row">
                                             <div class="col-5 text-center">
-                                                <img src="../images/brgylogo.png" alt="user-avatar" class="img-square img-fluid">
+                                                <img src="../images/logo.png" alt="user-avatar" class="img-square img-fluid">
                                             </div>
                                             <div class="col-7">
                                                 <h2 class="lead"><b>News Title</b></h2>
@@ -85,7 +85,7 @@ $page = 'Announcements';
                                     <div class="card-body pt-0">
                                         <div class="row">
                                             <div class="col-5 text-center">
-                                                <img src="../images/brgylogo.png" alt="user-avatar" class="img-square img-fluid">
+                                                <img src="../images/logo.png" alt="user-avatar" class="img-square img-fluid">
                                             </div>
                                             <div class="col-7">
                                                 <h2 class="lead"><b>News Title</b></h2>
@@ -109,7 +109,7 @@ $page = 'Announcements';
                                     <div class="card-body pt-0">
                                         <div class="row">
                                             <div class="col-5 text-center">
-                                                <img src="../images/brgylogo.png" alt="user-avatar" class="img-square img-fluid">
+                                                <img src="../images/logo.png" alt="user-avatar" class="img-square img-fluid">
                                             </div>
                                             <div class="col-7">
                                                 <h2 class="lead"><b>News Title</b></h2>
