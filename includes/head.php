@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="<?= ASSETS ?>/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="<?= ASSETS ?>/plugins/sweetalert2/sweetalert2.min.css">
+    <!-- BS Stepper -->
+    <link rel="stylesheet" href="<?= ASSETS ?>/plugins/bs-stepper/css/bs-stepper.min.css">
     <!-- Toastr -->
     <link rel="stylesheet" href="<?= ASSETS ?>/plugins/toastr/toastr.min.css">
     <!-- DataTables -->
