@@ -25,6 +25,8 @@
 <script src="<?= ASSETS ?>/plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
 <script src="<?= ASSETS ?>/plugins/toastr/toastr.min.js"></script>
+<!-- BS-Stepper -->
+<script src="<?= ASSETS ?>/plugins/bs-stepper/js/bs-stepper.min.js"></script>
 <!-- Data Tables -->
 <script src="<?= ASSETS ?>/plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="<?= ASSETS ?>/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -35,8 +37,13 @@
     $(window).on('load', function() {
         $('.preloader').addClass('fade-out')
 
-        /** Add Active class and stay opened on selected aside */
+        /** add active class and stay opened when selected */
         var url = window.location;
+        // for sidebar menu entirely but not cover treeview
+        $('li.nav-item a').filter(function() {
+            return this.href == url;
+        }).parentsUntil(".nav-item > .nav-link a").children().addClass('active');
+        // for treeview
         $('li.nav-item a').filter(function() {
             return this.href == url;
         }).parentsUntil(".nav-item > .nav-link").addClass('menu-open');
@@ -61,31 +68,35 @@
             'autoWidth': false,
             'scrollX': true,
         })
-        // Toast Fire
-        const Toast = Swal.mixin({
-            toast: true,
-            position: 'center',
-            showConfirmButton: false,
-            timer: 2000
-        });
-
-        function error() {
-            Swal.fire({
-                title: 'Error!',
-                text: 'Something went wrong!',
-                icon: 'error',
-                confirmButtonText: 'Exit'
-            })
-        }
-
-        function loading() {
-            Swal.fire({
-                title: 'Please wait...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading()
-                }
-            })
-        }
+        // Initialize the bootstrap switch
+        $("input[data-bootstrap-switch]").each(function() {
+            $(this).bootstrapSwitch('state', $(this).prop('checked'));
+        })
     })
+    // Toast Fire
+    const Toast = Swal.mixin({
+        toast: true,
+        position: 'center',
+        showConfirmButton: false,
+        timer: 2000
+    });
+
+    function error() {
+        Swal.fire({
+            title: 'Error!',
+            text: 'Something went wrong!',
+            icon: 'error',
+            confirmButtonText: 'Exit'
+        })
+    }
+
+    function loading() {
+        Swal.fire({
+            title: 'Please wait...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        })
+    }
 </script>
