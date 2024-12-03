@@ -1,6 +1,6 @@
 <?php
 include_once('session.php');
-$page = 'Baranggay Information';
+$page = 'Barangay Information';
 
 $sql = "SELECT * FROM brgy_info ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);
