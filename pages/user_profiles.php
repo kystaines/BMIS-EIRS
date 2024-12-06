@@ -1,6 +1,6 @@
 <?php
-include_once('session.php');
 $page = 'User Profiles';
+include_once('session.php');
 ?>
 
 <?php include_once('../includes/head.php') ?>
@@ -36,47 +36,20 @@ $page = 'User Profiles';
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <table id="dataTable" class="table table-hover table-head-fixed text-nowrap">
+                                    <table id="dataTable" class="table table-hover table-head-fixed text-nowrap projects">
                                         <thead>
                                             <tr>
-                                                <th>#</th>
-                                                <th>FULL NAME</th>
-                                                <th>NATIONAL ID</th>
-                                                <th>AGE</th>
-                                                <th>GENDER</th>
-                                                <th>CIVIL STATUS</th>
-                                                <th>VOTER STATUS</th>
-                                                <th class="text-center">ACTION</th>
+                                                <th style="width: 1%">#</th>
+                                                <th style="width: 5%">PHOTO</th>
+                                                <th style="width: 20%">FULL NAME</th>
+                                                <th style="width: 20%">NATIONAL ID</th>
+                                                <th style="width: 20%">AGE</th>
+                                                <th style="width: 20%">GENDER</th>
+                                                <th style="width: 20%">CIVIL STATUS</th>
+                                                <th style="width: 20%">VOTER STATUS</th>
+                                                <th style="width: 20%">ACTION</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1.</td>
-                                                <td>Dela Cruz, John Doe</td>
-                                                <td>1234</td>
-                                                <td>23</td>
-                                                <td>Male</td>
-                                                <td>Single</td>
-                                                <td>Acive</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Edit</button>
-                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp;Delete</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2.</td>
-                                                <td>Dela Cruz, John Doe</td>
-                                                <td>1234</td>
-                                                <td>23</td>
-                                                <td>Male</td>
-                                                <td>Single</td>
-                                                <td>In-Active</td>
-                                                <td>
-                                                    <button type="button" class="btn btn-primary btn-sm"><i class="fa fa-edit"></i>&nbsp;Edit</button>
-                                                    <button type="button" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i>&nbsp;Delete</button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
                                     </table>
                                 </div>
                                 <!-- /.card-body -->
@@ -93,24 +66,6 @@ $page = 'User Profiles';
     </div>
     <?php include_once('./modal/user_profiles.php') ?>
     <?php include_once('../includes/script.php') ?>
-
-    <script>
-        $(document).ready(function() {
-            $('#dataTable').DataTable({
-                "responsive": false,
-                "autoWidth": false,
-                'ordering': false,
-                "scrollX": true,
-                // "ajax": {
-                //     type: 'post',
-                //     url: 'ajax',
-                //     data: {
-                //         table: ''
-                //     },
-                // }
-            });
-        })
-    </script>
     <script>
         function readURL(input) {
             if (input.files && input.files[0]) {
@@ -124,11 +79,11 @@ $page = 'User Profiles';
             }
         }
 
-        $(document).on('click', '.create', function() {
-            $('#modal #action').val('create_user_profile')
-        })
-
-        const stepper = new Stepper(document.querySelector('#stepper'));
+        // Initialize the stepper
+        const stepper = new Stepper(document.querySelector('#stepper'), {
+            linear: true,
+            animation: true,
+        });
 
         function nextStep(currentStep) {
             const form = document.getElementById(`form${currentStep}`);
@@ -149,7 +104,7 @@ $page = 'User Profiles';
             const form2 = document.getElementById('form2');
             const form3 = document.getElementById('form3');
             const form4 = document.getElementById('form4');
-            if (form3.checkValidity()) {
+            if (form4.checkValidity()) {
                 // Here you can handle the form submission, e.g., send data to the server
                 var data = new FormData()
                 var form_data = $(form1).serializeArray()
@@ -193,6 +148,7 @@ $page = 'User Profiles';
                                 icon: response.icon,
                                 allowOutsideClick: false,
                             })
+                            table.ajax.reload(null, false)
                         } else {
                             Swal.fire({
                                 title: response.title,
@@ -208,7 +164,192 @@ $page = 'User Profiles';
                     }
                 });
             } else {
-                form.reportValidity();
+                form4.reportValidity();
             }
         }
+        // Show add record modal
+        $(document).on('click', '.create', function() {
+            $('#modal #action').val('create_user_profile')
+            $('#modal .img-content').attr('src', '../images/upload_image.png');
+        });
+        // Fetch and edit announcement on modal show
+        $(document).on('click', '.edit', function() {
+            $('#modal #action').val('edit_user_profile')
+            $.ajax({
+                type: "post",
+                url: "ajax",
+                data: {
+                    action: 'fetch_user_profile',
+                    id: $(this).attr('id')
+                },
+                dataType: "json",
+                beforeSend: function() {
+                    loading()
+                },
+                success: function(response) {
+                    Swal.close();
+                    $('#modal').modal('show')
+                    $('#modal #id').val(response.id)
+                    $('#modal .img-content').attr('src', response.image);
+                    $('#modal #lname').val(response.lname)
+                    $('#modal #fname').val(response.fname)
+                    $('#modal #mname').val(response.mname)
+                    $('#modal #suffix').val(response.suffix)
+                    $('#modal #bdate').val(response.bdate)
+                    $('#modal #age').val(response.age)
+                    $('#modal #birth_place').val(response.birth_place)
+                    $('#modal #gender').val(response.gender)
+                    $('#modal #civil_status').val(response.civil_status)
+                    $('#modal #citizenship').val(response.citizenship)
+                    $('#modal #voter_status').val(response.voter_status)
+                    $('#modal #occupation').val(response.occupation)
+
+                    $('#modal #province').html(response.list_province)
+                    $('#modal #city').html(response.list_city)
+                    $('#modal #brgy').html(response.list_brgy)
+
+                    $('#modal #region').val(response.region)
+                    $('#modal #province').val(response.province)
+                    $('#modal #city').val(response.city)
+                    $('#modal #brgy').val(response.brgy)
+                    $('#modal #street').val(response.street)
+                    $('#modal #contact_no').val(response.contact_no)
+                    $('#modal #email').val(response.email)
+                },
+                error: function() {
+                    console.error()
+                    error()
+                }
+            });
+        });
+        // Delete record
+        $(document).on('click', '.delete', function() {
+            let id = $(this).attr('id')
+            let data = $(this).data('val')
+            Swal.fire({
+                title: 'Confirm delete?',
+                html: 'Delete profile : <b class="text-primary">' + data + '</b> from list?',
+                icon: 'question',
+                allowOutsideClick: false,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: 'Yes',
+                cancelButtonText: 'No',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var action = 'delete_user_profile'
+                    $.ajax({
+                        type: "post",
+                        url: "ajax",
+                        data: {
+                            action: action,
+                            id: id
+                        },
+                        dataType: "json",
+                        beforeSend: function() {
+                            loading()
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                title: response.title,
+                                html: response.html,
+                                text: response.text,
+                                icon: response.icon,
+                                allowOutsideClick: false,
+                            })
+                            table.ajax.reload(null, false)
+                        },
+                        error: function() {
+                            error()
+                        }
+                    });
+                }
+            })
+        });
+        // Reset step tab on modal close
+        $(document).ready(function() {
+            var stepper = new Stepper($('.bs-stepper')[0])
+            $('#modal').on('hidden.bs.modal', function() {
+                // Reset the form fields
+                $('#form1')[0].reset();
+                $('#form2')[0].reset();
+                $('#form3')[0].reset();
+                $('#form4')[0].reset();
+            });
+
+        });
+        //Fetch address selection
+        $(document).on('change', '.address', function() {
+            var id = $(this).attr('id')
+            var data = $(this).data('id')
+            var col = $(this).data('val')
+            var code = $(this).data('code')
+            var val = $(this).val()
+
+            switch (data) {
+                case 'refprovince':
+                    $('#city').html('<option value="" selected hidden disabled>Pumili ng City</option><option value="" disabled>Pumili muna ng Probinsya</option>')
+                    $('#brgy').html('<option value="" selected hidden disabled>Pumili ng Barangay</option><option value="" disabled>Pumili muna ng City</option>')
+                    break;
+                case 'refcitymun':
+                    $('#brgy').html('<option value="" selected hidden disabled>Pumili ng Barangay</option><option value="" disabled>Pumili muna ng City</option>')
+                    break;
+                case 'refcitymun':
+                    $('#brgy').html('<option value="" selected hidden disabled>Pumili ng Barangay</option><option value="" disabled>Pumili muna ng City</option>')
+                    break;
+                default:
+                    break;
+            }
+
+            $.ajax({
+                type: "post",
+                url: "ajax",
+                data: {
+                    fetch: 'address',
+                    id: id,
+                    data: data,
+                    col: col,
+                    code: code,
+                    val: val
+                },
+                dataType: "json",
+                success: function(response) {
+                    $(response.id).html(response.data)
+                },
+                error: function() {
+                    error()
+                }
+            });
+        });
+
+        function fetchAddress(tbl, val) {
+            $.ajax({
+                type: "post",
+                url: "ajax",
+                data: {
+                    fetch: 'address',
+                    val: val,
+                    tbl: tbl
+                },
+                dataType: "json",
+                success: function(response) {
+                    return response.data
+                }
+            });
+        }
+    </script>
+    <script>
+        var table = $('#dataTable').DataTable({
+            "responsive": false,
+            "autoWidth": false,
+            'ordering': false,
+            "scrollX": true,
+            "ajax": {
+                type: 'post',
+                url: 'ajax',
+                data: {
+                    table: 'user_profile'
+                },
+            }
+        });
     </script>

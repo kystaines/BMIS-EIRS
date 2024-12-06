@@ -26,7 +26,7 @@
                         </div>
                         <div class="form-group">
                             <label for="access_type">User Type</label>
-                            <select class="form-control" name="user_access" id="user_access" style="width: 100%" required>
+                            <select class="form-control" name="user_type" id="user_type" style="width: 100%" required>
                                 <option value="" selected="selected" hidden disabled>Select User Type</option>
                                 <option value="ADMIN">ADMIN</option>
                                 <option value="USER">STAFF</option>

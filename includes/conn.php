@@ -24,6 +24,7 @@ try {
                 is_active TEXT DEFAULT NULL,
                 user_status TEXT DEFAULT NULL,
                 user_type TEXT DEFAULT NULL,
+                user_profile_id TEXT DEFAULT NULL,
                 access_token TEXT DEFAULT NULL,
                 INDEX (email)
                 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -33,20 +34,23 @@ try {
     $sql = "SELECT email FROM users WHERE email = '$email'";
     $result = $conn->query($sql);
     if ($result->rowCount() < 1) {
-        $pass = password_hash('password', PASSWORD_BCRYPT);
+        $pass = password_hash('admin', PASSWORD_BCRYPT);
         $role_id = 0;
         $arr_data = array(
             'email' => $email,
             'pass' => $pass,
             'activation_code' => '',
             'is_active' => 1,
-            'user_status' => 'verified',
-            'user_type' => 'admin', //admin,user,staff
+            'user_status' => 'default',
+            'user_type' => 'ADMIN', //admin,user,staff
             'access_token' => ''
         );
         $columns = implode(",", array_keys($arr_data));
         $values = implode("','", array_values($arr_data));
         $conn->exec("INSERT INTO users ($columns) VALUES ('$values')");
+
+        $conn->query("INSERT INTO users (email,pass,activation_code,is_active,user_status,user_type,access_token) VALUES ('staff@staff.com','".password_hash('staff', PASSWORD_BCRYPT). "','','1','default','STAFF','')");
+        $conn->query("INSERT INTO users (email,pass,activation_code,is_active,user_status,user_type,access_token) VALUES ('user@user.com','".password_hash('user', PASSWORD_BCRYPT). "','','1','default','USER','')");
     }
 /** BARANGAY INFO */
     $conn->exec("CREATE TABLE IF NOT EXISTS brgy_info (
@@ -78,7 +82,7 @@ try {
                 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
             ");
 /** USER PROFILES */
-    $conn->exec("CREATE TABLE IF NOT EXISTS user_profiles (
+    $conn->exec("CREATE TABLE IF NOT EXISTS user_profile (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 lname VARCHAR(255) DEFAULT NULL,
@@ -105,15 +109,95 @@ try {
                 INDEX (lname)
                 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
             ");
+/** CERTIFICATES */
+    $conn->exec("CREATE TABLE IF NOT EXISTS certificates (
+                id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                email VARCHAR(255) DEFAULT NULL,
+                cert_type TEXT DEFAULT NULL,
+                cert_purpose TEXT DEFAULT NULL,
+                fullname TEXT DEFAULT NULL,
+                region TEXT DEFAULT NULL,
+                province TEXT DEFAULT NULL,
+                city TEXT DEFAULT NULL,
+                brgy TEXT DEFAULT NULL,
+                street TEXT DEFAULT NULL,
+                contact_no TEXT DEFAULT NULL,
+                request_status TEXT DEFAULT NULL,
+                is_active TEXT DEFAULT NULL,                
+                updated_at TEXT DEFAULT NULL,                
+                INDEX (email)
+                )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            ");
+/** BARANGAY ID */
+    $conn->exec("CREATE TABLE IF NOT EXISTS barangay_id (
+                id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                email VARCHAR(255) DEFAULT NULL,
+                fullname TEXT DEFAULT NULL,
+                bdate TEXT DEFAULT NULL,
+                gender TEXT DEFAULT NULL,
+                civil_status TEXT DEFAULT NULL,
+                region TEXT DEFAULT NULL,
+                province TEXT DEFAULT NULL,
+                city TEXT DEFAULT NULL,
+                brgy TEXT DEFAULT NULL,
+                street TEXT DEFAULT NULL,
+                contact_no TEXT DEFAULT NULL,
+                tel_no TEXT DEFAULT NULL,
+                employers_name TEXT DEFAULT NULL,
+                lenght_stay_year TEXT DEFAULT NULL,
+                lenght_stay_month TEXT DEFAULT NULL,
+                fathers_name TEXT DEFAULT NULL,
+                mothers_name TEXT DEFAULT NULL,
+                emergency_person TEXT DEFAULT NULL,
+                emergency_contact TEXT DEFAULT NULL,
+                emergency_relationship TEXT DEFAULT NULL,
+                emergency_address TEXT DEFAULT NULL,
+                request_status TEXT DEFAULT NULL,
+                is_active TEXT DEFAULT NULL,                
+                updated_at TEXT DEFAULT NULL,                
+                INDEX (fullname)
+                )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            ");
 /** SETTINGS */
     $conn->exec("CREATE TABLE IF NOT EXISTS settings (
                 id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 logo LONGBLOB DEFAULT NULL,    
                 sys_name TEXT DEFAULT NULL,
+                email TEXT DEFAULT NULL,
+                `address` TEXT DEFAULT NULL,
+                `contact` TEXT DEFAULT NULL,
+                `vision` TEXT DEFAULT NULL,
+                `mission` TEXT DEFAULT NULL,
                 INDEX (id)
                 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
             ");
+/** OFFICIALS */
+    $conn->exec("CREATE TABLE IF NOT EXISTS officials (
+                id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                fullname TEXT DEFAULT NULL,
+                email TEXT DEFAULT NULL,
+                contact_no TEXT DEFAULT NULL,
+                position_id TEXT DEFAULT NULL,
+                INDEX (id)
+                )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            ");
+/** POSITIONS */
+    $conn->exec("CREATE TABLE IF NOT EXISTS positions (
+                id INT(11) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                position_name TEXT DEFAULT NULL,
+                max_count TEXT DEFAULT NULL,
+                level_priority TEXT DEFAULT NULL,
+                INDEX (id)
+                )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            ");
+/** REGION CITY STREET */
+    include_once('region_city.php');
+
 } catch (PDOException $e) {
     echo "Connection failed : " . $e->getMessage();
     $conn = null;

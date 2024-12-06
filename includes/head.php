@@ -29,6 +29,10 @@
     <link rel="stylesheet" href="<?= ASSETS ?>/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="<?= ASSETS ?>/dist/css/adminlte.min.css">
+    <!-- jQuery -->
+    <script src="<?= ASSETS ?>/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="<?= ASSETS ?>/plugins/jquery-ui/jquery-ui.min.js"></script>
     <style>
         /* css input type number: remove button */
         input[type=number]::-webkit-inner-spin-button {
@@ -43,4 +47,40 @@
             cursor: pointer;
         }
     </style>
+
+    <!-- Active Script -->
+    <script>
+        $(window).on('load', function() {
+            $('.preloader').addClass('fade-out')
+            /** add active class and stay opened when selected */
+            var url = window.location;
+            // for sidebar menu entirely but not cover treeview
+            $('li.nav-item a').filter(function() {
+                return this.href == url;
+            }).parentsUntil(".nav-item > .nav-link a").children().addClass('active');
+            // for treeview
+            $('li.nav-item a').filter(function() {
+                return this.href == url;
+            }).parentsUntil(".nav-item > .nav-link").addClass('menu-open');
+        });
+
+        function error() {
+            Swal.fire({
+                title: 'Error!',
+                text: 'Something went wrong!',
+                icon: 'error',
+                confirmButtonText: 'Exit'
+            })
+        }
+
+        function loading() {
+            Swal.fire({
+                title: 'Please wait...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading()
+                }
+            })
+        }
+    </script>
 </head>

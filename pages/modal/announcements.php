@@ -9,7 +9,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form id="form"enctype="multipart/form-data">
+            <form id="form" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="card-body m-0 p-0">
                         <div class="form-group col-12">
@@ -17,7 +17,7 @@
                                 <div class="image-upload ">
                                     <label for="file-input">
                                         <img class="img-profile img-content" src="../images/upload_image.png"
-                                            style="cursor:pointer; width: 160px; height: 160px;" />
+                                            style="cursor:pointer; width: 160px; height: auto;" />
                                     </label>
                                     <input id="file-input" type="file" accept=".png, .jpg" onchange="readURL(this);" name="file" hidden />
                                 </div>
@@ -48,8 +48,8 @@
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <input type="text" name="id" id="id" value="" />
-                    <input type="text" name="action" id="action" />
+                    <input type="hidden" name="id" id="id" value="" />
+                    <input type="hidden" name="action" id="action" />
                     <input type="submit" name="btn_action" id="btn_action" class="btn btn-primary" value="SAVE" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">CLOSE</button>
                 </div>
