@@ -45,7 +45,7 @@
                             </p>
                         </a>
                     </li>
-                    <!-- <li class="nav-header">EQUIPMENT RESERVATIONS</li>
+                    <li class="nav-header">EQUIPMENT RESERVATIONS</li>
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="nav-icon fa fa-tachometer-alt"></i>
@@ -69,7 +69,7 @@
                                 Reservations
                             </p>
                         </a>
-                    </li> -->
+                    </li>
                     <li class="nav-header">ADMIN TOOLS</li>
                     <li class="nav-item">
                         <a href="officials.php" class="nav-link">
@@ -166,7 +166,7 @@
                         <a href="barangay_id.php" class="nav-link">
                             <i class="nav-icon fas fa-id-card"></i>
                             <p>
-                                Barabgay ID
+                                Barangay ID
                             </p>
                         </a>
                     </li>
