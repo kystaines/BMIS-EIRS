@@ -3,6 +3,6 @@ for: BARANGAY 775 ZONE 84
 
 Group:
 Fernandez, Martin Rafael |
-Guerrero, Rowena; |
-Sta. Ines, Keziah Ysabel; |
+Guerrero, Rowena |
+Sta. Ines, Keziah Ysabel |
 Terrobias, Alexander James
